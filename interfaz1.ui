@@ -563,6 +563,11 @@ QTableWidget QTableCornerButton::section {
                    </attribute>
                    <column>
                     <property name="text">
+                     <string>ID</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
                      <string>NOMBRE</string>
                     </property>
                     <property name="textAlignment">
@@ -583,6 +588,11 @@ QTableWidget QTableCornerButton::section {
                     </property>
                     <property name="textAlignment">
                      <set>AlignCenter</set>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>ENLACE</string>
                     </property>
                    </column>
                   </widget>
@@ -860,67 +870,6 @@ QTableWidget QTableCornerButton::section {
                  <property name="text">
                   <string>REGISTRAR</string>
                  </property>
-                </widget>
-                <widget class="QTableWidget" name="tabla_canales_2">
-                 <property name="geometry">
-                  <rect>
-                   <x>150</x>
-                   <y>250</y>
-                   <width>531</width>
-                   <height>211</height>
-                  </rect>
-                 </property>
-                 <property name="sizeAdjustPolicy">
-                  <enum>QAbstractScrollArea::AdjustToContents</enum>
-                 </property>
-                 <attribute name="horizontalHeaderVisible">
-                  <bool>true</bool>
-                 </attribute>
-                 <attribute name="horizontalHeaderCascadingSectionResizes">
-                  <bool>false</bool>
-                 </attribute>
-                 <attribute name="horizontalHeaderDefaultSectionSize">
-                  <number>180</number>
-                 </attribute>
-                 <attribute name="horizontalHeaderHighlightSections">
-                  <bool>true</bool>
-                 </attribute>
-                 <attribute name="horizontalHeaderMinimumSectionSize">
-                  <number>40</number>
-                 </attribute>
-                 <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
-                  <bool>true</bool>
-                 </attribute>
-                 <attribute name="horizontalHeaderStretchLastSection">
-                  <bool>false</bool>
-                 </attribute>
-                 <attribute name="verticalHeaderCascadingSectionResizes">
-                  <bool>false</bool>
-                 </attribute>
-                 <column>
-                  <property name="text">
-                   <string>NOMBRE</string>
-                  </property>
-                  <property name="textAlignment">
-                   <set>AlignCenter</set>
-                  </property>
-                 </column>
-                 <column>
-                  <property name="text">
-                   <string>SUSCRIPTORES</string>
-                  </property>
-                  <property name="textAlignment">
-                   <set>AlignCenter</set>
-                  </property>
-                 </column>
-                 <column>
-                  <property name="text">
-                   <string>CATEGORIA</string>
-                  </property>
-                  <property name="textAlignment">
-                   <set>AlignCenter</set>
-                  </property>
-                 </column>
                 </widget>
                </widget>
                <widget class="QWidget" name="page_actualizar">
