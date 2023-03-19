@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1121</width>
-    <height>781</height>
+    <width>984</width>
+    <height>638</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -533,7 +533,7 @@ QTableWidget QTableCornerButton::section {
                   </widget>
                  </item>
                  <item>
-                  <widget class="QTableWidget" name="tabla_canales">
+                  <widget class="QTableWidget" name="tabla_datos">
                    <property name="sizeAdjustPolicy">
                     <enum>QAbstractScrollArea::AdjustToContents</enum>
                    </property>
@@ -715,6 +715,19 @@ QTableWidget QTableCornerButton::section {
                        </property>
                       </widget>
                      </item>
+                     <item>
+                      <widget class="QLabel" name="label_9">
+                       <property name="minimumSize">
+                        <size>
+                         <width>150</width>
+                         <height>0</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string>ENLACE</string>
+                       </property>
+                      </widget>
+                     </item>
                     </layout>
                    </item>
                    <item>
@@ -730,6 +743,9 @@ QTableWidget QTableCornerButton::section {
                      </item>
                      <item>
                       <widget class="QLineEdit" name="lineEdit_3"/>
+                     </item>
+                     <item>
+                      <widget class="QLineEdit" name="lineEdit_5"/>
                      </item>
                     </layout>
                    </item>
@@ -816,64 +832,94 @@ QTableWidget QTableCornerButton::section {
                 </layout>
                </widget>
                <widget class="QWidget" name="page_borrar">
-                <widget class="QLabel" name="label_17">
-                 <property name="geometry">
-                  <rect>
-                   <x>300</x>
-                   <y>30</y>
-                   <width>141</width>
-                   <height>51</height>
-                  </rect>
-                 </property>
-                 <property name="text">
-                  <string>TextLabel</string>
-                 </property>
-                </widget>
-                <widget class="QLabel" name="label_18">
-                 <property name="geometry">
-                  <rect>
-                   <x>70</x>
-                   <y>150</y>
-                   <width>121</width>
-                   <height>71</height>
-                  </rect>
-                 </property>
-                 <property name="text">
-                  <string>TextLabel</string>
-                 </property>
-                </widget>
-                <widget class="QLineEdit" name="lineEdit_11">
-                 <property name="geometry">
-                  <rect>
-                   <x>230</x>
-                   <y>170</y>
-                   <width>171</width>
-                   <height>41</height>
-                  </rect>
-                 </property>
-                </widget>
-                <widget class="QPushButton" name="bt_buscar_2">
-                 <property name="geometry">
-                  <rect>
-                   <x>510</x>
-                   <y>180</y>
-                   <width>120</width>
-                   <height>30</height>
-                  </rect>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>120</width>
-                   <height>30</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string>REGISTRAR</string>
-                 </property>
-                </widget>
+                <layout class="QVBoxLayout" name="verticalLayout_8">
+                 <item>
+                  <widget class="QLabel" name="label_17">
+                   <property name="text">
+                    <string>BORRAR CANALES</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <layout class="QHBoxLayout" name="horizontalLayout_7">
+                   <item>
+                    <widget class="QLabel" name="label_18">
+                     <property name="text">
+                      <string>NOMBRE DEL CANAL</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLineEdit" name="lineEdit_11"/>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="bt_buscar_borrar">
+                     <property name="minimumSize">
+                      <size>
+                       <width>120</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="text">
+                      <string>BUSCAR</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <widget class="QTableWidget" name="tabla_borrar"/>
+                 </item>
+                 <item>
+                  <layout class="QHBoxLayout" name="horizontalLayout_10">
+                   <item>
+                    <widget class="QLabel" name="label_10">
+                     <property name="minimumSize">
+                      <size>
+                       <width>150</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                     <property name="text">
+                      <string/>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="horizontalSpacer_5">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>40</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="bt_borrar">
+                     <property name="minimumSize">
+                      <size>
+                       <width>120</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="text">
+                      <string>BORRAR</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
                </widget>
                <widget class="QWidget" name="page_actualizar">
-                <layout class="QVBoxLayout" name="verticalLayout_12">
+                <layout class="QVBoxLayout" name="verticalLayout_11">
                  <item>
                   <widget class="QLabel" name="label_7">
                    <property name="minimumSize">
@@ -916,7 +962,7 @@ QTableWidget QTableCornerButton::section {
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="bt_buscar">
+                    <widget class="QPushButton" name="bt_buscar_actualizar">
                      <property name="minimumSize">
                       <size>
                        <width>120</width>
@@ -946,7 +992,7 @@ QTableWidget QTableCornerButton::section {
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_8">
                    <item>
-                    <layout class="QVBoxLayout" name="verticalLayout_10">
+                    <layout class="QVBoxLayout" name="verticalLayout_9">
                      <property name="spacing">
                       <number>100</number>
                      </property>
@@ -989,10 +1035,23 @@ QTableWidget QTableCornerButton::section {
                        </property>
                       </widget>
                      </item>
+                     <item>
+                      <widget class="QLabel" name="label_15">
+                       <property name="minimumSize">
+                        <size>
+                         <width>150</width>
+                         <height>0</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string>ENLACE</string>
+                       </property>
+                      </widget>
+                     </item>
                     </layout>
                    </item>
                    <item>
-                    <layout class="QVBoxLayout" name="verticalLayout_11">
+                    <layout class="QVBoxLayout" name="verticalLayout_10">
                      <property name="spacing">
                       <number>100</number>
                      </property>
@@ -1004,6 +1063,9 @@ QTableWidget QTableCornerButton::section {
                      </item>
                      <item>
                       <widget class="QLineEdit" name="lineEdit_10"/>
+                     </item>
+                     <item>
+                      <widget class="QLineEdit" name="lineEdit_12"/>
                      </item>
                     </layout>
                    </item>
@@ -1089,7 +1151,281 @@ QTableWidget QTableCornerButton::section {
                  </item>
                 </layout>
                </widget>
-               <widget class="QWidget" name="page_consultar"/>
+               <widget class="QWidget" name="page_consultar">
+                <layout class="QVBoxLayout" name="verticalLayout_14">
+                 <item>
+                  <widget class="QLabel" name="label_11">
+                   <property name="text">
+                    <string>CONSULTAR</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <layout class="QHBoxLayout" name="horizontalLayout_12">
+                   <item>
+                    <widget class="QLabel" name="label_19">
+                     <property name="text">
+                      <string>NOMBRE DEL CANAL</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="horizontalSpacer_7">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>40</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                   <item>
+                    <widget class="QLineEdit" name="lineEdit_6"/>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="bt_buscar_consultar">
+                     <property name="minimumSize">
+                      <size>
+                       <width>120</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="text">
+                      <string>BUSCAR</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <spacer name="verticalSpacer_5">
+                   <property name="orientation">
+                    <enum>Qt::Vertical</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>20</width>
+                     <height>40</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item>
+                  <layout class="QHBoxLayout" name="horizontalLayout_13">
+                   <item>
+                    <layout class="QVBoxLayout" name="verticalLayout_12">
+                     <property name="spacing">
+                      <number>100</number>
+                     </property>
+                     <item>
+                      <widget class="QLabel" name="label_20">
+                       <property name="minimumSize">
+                        <size>
+                         <width>150</width>
+                         <height>0</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string>NOMBRE:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QLabel" name="label_21">
+                       <property name="minimumSize">
+                        <size>
+                         <width>150</width>
+                         <height>0</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string>SUSCRIPTORES:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QLabel" name="label_22">
+                       <property name="minimumSize">
+                        <size>
+                         <width>150</width>
+                         <height>0</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string>CATEGORÍA:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QLabel" name="label_23">
+                       <property name="minimumSize">
+                        <size>
+                         <width>150</width>
+                         <height>0</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string>ENLACE:</string>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <layout class="QVBoxLayout" name="verticalLayout_13">
+                     <property name="spacing">
+                      <number>100</number>
+                     </property>
+                     <item>
+                      <widget class="QLabel" name="label_nombre">
+                       <property name="minimumSize">
+                        <size>
+                         <width>400</width>
+                         <height>0</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>16777215</width>
+                         <height>40</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QLabel" name="label_suscriptores">
+                       <property name="minimumSize">
+                        <size>
+                         <width>400</width>
+                         <height>0</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>16777215</width>
+                         <height>40</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QLabel" name="label_categoria">
+                       <property name="minimumSize">
+                        <size>
+                         <width>400</width>
+                         <height>0</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>16777215</width>
+                         <height>40</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QLabel" name="label_enlace">
+                       <property name="minimumSize">
+                        <size>
+                         <width>400</width>
+                         <height>0</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>16777215</width>
+                         <height>40</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <spacer name="horizontalSpacer_10">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>40</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <spacer name="verticalSpacer_6">
+                   <property name="orientation">
+                    <enum>Qt::Vertical</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>20</width>
+                     <height>40</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item>
+                  <layout class="QHBoxLayout" name="horizontalLayout_14">
+                   <item>
+                    <widget class="QLabel" name="label_nocanal">
+                     <property name="minimumSize">
+                      <size>
+                       <width>300</width>
+                       <height>40</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>16777215</width>
+                       <height>40</height>
+                      </size>
+                     </property>
+                     <property name="text">
+                      <string/>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="horizontalSpacer_9">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>40</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
+               </widget>
               </widget>
              </item>
             </layout>
