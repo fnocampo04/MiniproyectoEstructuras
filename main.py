@@ -1,12 +1,24 @@
-from PyQt6.QtWidgets import QMainWindow, QApplication,QSizeGrip, QPushButton
+from PyQt6.QtSql import QSqlQuery
+from PyQt6.QtWidgets import QMainWindow, QApplication, QSizeGrip, QPushButton, QHeaderView, QSizePolicy
 from PyQt6.uic import loadUi
 from PyQt6.QtCore import Qt, QPoint
 import sys
+
+from conexionSQLite import *
+
 
 class Ventana(QMainWindow):
     def __init__(self):
         super().__init__()
         loadUi('interfaz1.ui', self)  # carga la interfaz de usuario desde el archivo .ui
+
+        self.conexion = ConexionSQLite()
+        self.conexion.cargar_datos_en_tabla(self.tabla_datos)
+        self.conexion.cargar_datos_en_tabla(self.tabla_borrar)
+
+        # ajusta las tablas al tamaño de la ventana
+        self.tabla_datos.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
+        self.tabla_borrar.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
 
         # quita el borde de la ventana
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint)
@@ -14,8 +26,6 @@ class Ventana(QMainWindow):
         self.gripSize = 10
         self.grip = QSizeGrip(self)
         self.grip.resize(self.gripSize, self.gripSize)
-
-
 
         # conecta la señal clicked del botón bt_cerrar al método close de la ventana
         self.bt_cerrar.clicked.connect(self.close)
@@ -44,7 +54,13 @@ class Ventana(QMainWindow):
         # conecta la señal clicked del botón pushButton_5 al método ir_a_pagina_consultar
         self.pushButton_5.clicked.connect(self.ir_a_pagina_consultar)
 
+        # conecta el evento clicked del botón bt_registrar a la función registrar_canal
+        self.bt_registrar.clicked.connect(self.registrar_canal)
 
+        # conecta la señal clicked del botón bt_refrescar al método refrescar_tabla
+        self.bt_refrescar.clicked.connect(self.refrescar_tabla)
+
+        self.bt_buscar_borrar.clicked.connect(self.buscar_borrar)
 
     def cambiar_estado_ventana(self):
         if self.isMaximized():
@@ -107,8 +123,48 @@ class Ventana(QMainWindow):
         # Muestra la página
         self.stackedWidget.setCurrentIndex(indice_pagina_consultar)
 
+    def refrescar_tabla(self):
+        self.conexion.cargar_datos_en_tabla(self.tabla_datos)
+    def registrar_canal(self):
+        nombre = self.line_nombre_reg.text() # line edit del nombre a registrar
+        suscriptores = self.line_suscriptores_reg.text() # line edit de los suscriptores a registrar
+        categoria = self.line_categoria_reg.text() # line edit de la categoria a registrar
+        enlace = self.line_enlace_reg.text() # line edit del enlace a registrar
 
+        if (nombre != '' and suscriptores != '' and categoria != '' and enlace != ''): # verifica que los campos no estan vacios
+            self.conexion.insertar_canal(nombre, categoria,suscriptores, enlace) # el metodo inserta el canal en la base de datos
+            self.label_registro_estado.setText("Canal registrado correctamente")
+        else:
+            self.label_registro_estado.setText("No se han completado todos los campos")
 
+    def buscar_borrar(self):
+        nombre = self.line_buscar_borrar.text() # line edit del nombre a buscar
+
+        if(nombre != ''): # verifica que si haya escrito algo
+            # Consulta a la base de datos para obtener los registros con el nombre ingresado
+            query = QSqlQuery(f"SELECT * FROM base_datos WHERE nombre = '{nombre}'")
+
+            # Limpieza de la tabla para mostrar únicamente los registros con el nombre ingresado
+            self.tabla_borrar.setRowCount(0)
+
+            # Bucle para recorrer todos los registros con el nombre ingresado
+            row = 0
+            while query.next():
+                # Obtención de los valores de cada registro
+                nombre = query.value(0)
+                suscriptores = query.value(1)
+                categoria = query.value(2)
+                enlace = query.value(3)
+
+                # Inserción de los valores en la tabla
+                self.tabla_borrar.insertRow(row)
+                self.tabla_borrar.setItem(row, 0, QTableWidgetItem(nombre))
+                self.tabla_borrar.setItem(row, 1, QTableWidgetItem(suscriptores))
+                self.tabla_borrar.setItem(row, 2, QTableWidgetItem(categoria))
+                self.tabla_borrar.setItem(row, 3, QTableWidgetItem(enlace))
+
+                # Incremento del índice de fila
+                row += 1
 
 
 if __name__ == '__main__':

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>984</width>
-    <height>638</height>
+    <width>1113</width>
+    <height>705</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -538,10 +538,10 @@ QTableWidget QTableCornerButton::section {
                     <enum>QAbstractScrollArea::AdjustToContents</enum>
                    </property>
                    <attribute name="horizontalHeaderVisible">
-                    <bool>false</bool>
+                    <bool>true</bool>
                    </attribute>
                    <attribute name="horizontalHeaderCascadingSectionResizes">
-                    <bool>false</bool>
+                    <bool>true</bool>
                    </attribute>
                    <attribute name="horizontalHeaderDefaultSectionSize">
                     <number>180</number>
@@ -561,11 +561,6 @@ QTableWidget QTableCornerButton::section {
                    <attribute name="verticalHeaderCascadingSectionResizes">
                     <bool>false</bool>
                    </attribute>
-                   <column>
-                    <property name="text">
-                     <string>ID</string>
-                    </property>
-                   </column>
                    <column>
                     <property name="text">
                      <string>NOMBRE</string>
@@ -593,6 +588,9 @@ QTableWidget QTableCornerButton::section {
                    <column>
                     <property name="text">
                      <string>ENLACE</string>
+                    </property>
+                    <property name="textAlignment">
+                     <set>AlignCenter</set>
                     </property>
                    </column>
                   </widget>
@@ -736,16 +734,16 @@ QTableWidget QTableCornerButton::section {
                       <number>100</number>
                      </property>
                      <item>
-                      <widget class="QLineEdit" name="lineEdit"/>
+                      <widget class="QLineEdit" name="line_nombre_reg"/>
                      </item>
                      <item>
-                      <widget class="QLineEdit" name="lineEdit_2"/>
+                      <widget class="QLineEdit" name="line_suscriptores_reg"/>
                      </item>
                      <item>
-                      <widget class="QLineEdit" name="lineEdit_3"/>
+                      <widget class="QLineEdit" name="line_categoria_reg"/>
                      </item>
                      <item>
-                      <widget class="QLineEdit" name="lineEdit_5"/>
+                      <widget class="QLineEdit" name="line_enlace_reg"/>
                      </item>
                     </layout>
                    </item>
@@ -780,7 +778,7 @@ QTableWidget QTableCornerButton::section {
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_6">
                    <item>
-                    <widget class="QLabel" name="label_3">
+                    <widget class="QLabel" name="label_registro_estado">
                      <property name="minimumSize">
                       <size>
                        <width>150</width>
@@ -853,7 +851,7 @@ QTableWidget QTableCornerButton::section {
                     </widget>
                    </item>
                    <item>
-                    <widget class="QLineEdit" name="lineEdit_11"/>
+                    <widget class="QLineEdit" name="line_buscar_borrar"/>
                    </item>
                    <item>
                     <widget class="QPushButton" name="bt_buscar_borrar">
@@ -871,7 +869,28 @@ QTableWidget QTableCornerButton::section {
                   </layout>
                  </item>
                  <item>
-                  <widget class="QTableWidget" name="tabla_borrar"/>
+                  <widget class="QTableWidget" name="tabla_borrar">
+                   <column>
+                    <property name="text">
+                     <string>NOMBRE</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>SUSCRIPTORES</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>CATEGORIA</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>ENLACE</string>
+                    </property>
+                   </column>
+                  </widget>
                  </item>
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_10">
