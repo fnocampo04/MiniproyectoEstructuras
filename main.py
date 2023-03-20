@@ -138,33 +138,11 @@ class Ventana(QMainWindow):
             self.label_registro_estado.setText("No se han completado todos los campos")
 
     def buscar_borrar(self):
-        nombre = self.line_buscar_borrar.text() # line edit del nombre a buscar
-
+        nombre = self.line_buscar_borrar.text()
         if(nombre != ''): # verifica que si haya escrito algo
-            # Consulta a la base de datos para obtener los registros con el nombre ingresado
-            query = QSqlQuery(f"SELECT * FROM base_datos WHERE nombre = '{nombre}'")
-
-            # Limpieza de la tabla para mostrar únicamente los registros con el nombre ingresado
-            self.tabla_borrar.setRowCount(0)
-
-            # Bucle para recorrer todos los registros con el nombre ingresado
-            row = 0
-            while query.next():
-                # Obtención de los valores de cada registro
-                nombre = query.value(0)
-                suscriptores = query.value(1)
-                categoria = query.value(2)
-                enlace = query.value(3)
-
-                # Inserción de los valores en la tabla
-                self.tabla_borrar.insertRow(row)
-                self.tabla_borrar.setItem(row, 0, QTableWidgetItem(nombre))
-                self.tabla_borrar.setItem(row, 1, QTableWidgetItem(suscriptores))
-                self.tabla_borrar.setItem(row, 2, QTableWidgetItem(categoria))
-                self.tabla_borrar.setItem(row, 3, QTableWidgetItem(enlace))
-
-                # Incremento del índice de fila
-                row += 1
+            self.conexion.buscar_canal(self.tabla_borrar, nombre)
+        else:
+            self.label_borrar_estado.setText("No se ha ingresado un parámetro de búsqueda")
 
 
 if __name__ == '__main__':

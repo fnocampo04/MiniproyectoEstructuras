@@ -538,7 +538,7 @@ QTableWidget QTableCornerButton::section {
                     <enum>QAbstractScrollArea::AdjustToContents</enum>
                    </property>
                    <attribute name="horizontalHeaderVisible">
-                    <bool>true</bool>
+                    <bool>false</bool>
                    </attribute>
                    <attribute name="horizontalHeaderCascadingSectionResizes">
                     <bool>true</bool>
@@ -895,7 +895,7 @@ QTableWidget QTableCornerButton::section {
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_10">
                    <item>
-                    <widget class="QLabel" name="label_10">
+                    <widget class="QLabel" name="label_borrar_estado">
                      <property name="minimumSize">
                       <size>
                        <width>150</width>

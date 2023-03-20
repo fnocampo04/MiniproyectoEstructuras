@@ -1,4 +1,6 @@
 import sqlite3
+
+from PyQt6.QtSql import QSqlQuery
 from PyQt6.QtWidgets import QTableWidgetItem
 
 
@@ -25,4 +27,14 @@ class ConexionSQLite:
         except sqlite3.Error:
             self.label_registro_estado.setText("Error al insertar datos con SQLite")
             return False
+
+    def buscar_canal(self, tabla, nombre):
+        query = "SELECT * FROM base_datos WHERE nombre = ?"
+        result = self.cursor.execute(query, (nombre,))
+        tabla.setRowCount(0)
+
+        for row_number, row_data in enumerate(result):
+            tabla.insertRow(row_number)
+            for column_number, data in enumerate(row_data):
+                tabla.setItem(row_number, column_number, QTableWidgetItem(str(data)))
 
