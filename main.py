@@ -1,5 +1,5 @@
 from PyQt6.QtSql import QSqlQuery
-from PyQt6.QtWidgets import QMainWindow, QApplication, QSizeGrip, QPushButton, QHeaderView, QSizePolicy
+from PyQt6.QtWidgets import QMainWindow, QApplication, QSizeGrip, QHeaderView
 from PyQt6.uic import loadUi
 from PyQt6.QtCore import Qt, QPoint
 import sys
@@ -19,6 +19,9 @@ class Ventana(QMainWindow):
         # ajusta las tablas al tamaño de la ventana
         self.tabla_datos.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
         self.tabla_borrar.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
+
+        # deshabilita la edición de las tablas
+
 
         # quita el borde de la ventana
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint)
@@ -61,6 +64,16 @@ class Ventana(QMainWindow):
         self.bt_refrescar.clicked.connect(self.refrescar_tabla)
 
         self.bt_buscar_borrar.clicked.connect(self.buscar_borrar)
+
+        self.bt_borrar.clicked.connect(self.borrar_canal)
+        self.bt_borrar.setEnabled(False) # deshabilita el botón de borrar hasta que se seleccione una fila
+        self.tabla_borrar.cellClicked.connect(self.seleccionar_fila) # conecta la señal de clic en una celda a la función seleccionar_fila
+
+        self.bt_buscar_actualizar.clicked.connect(self.buscar_actualizar)
+
+        self.bt_actualizar.clicked.connect(self.actualizar)
+
+        self.nombre_actual = ''
 
     def cambiar_estado_ventana(self):
         if self.isMaximized():
@@ -108,6 +121,7 @@ class Ventana(QMainWindow):
 
         # Muestra la página
         self.stackedWidget.setCurrentIndex(indice_pagina_borrar)
+        self.conexion.cargar_datos_en_tabla(self.tabla_borrar)
 
     def ir_a_pagina_actualizar(self):
         # Obtiene el índice de la página a mostrar
@@ -132,17 +146,67 @@ class Ventana(QMainWindow):
         enlace = self.line_enlace_reg.text() # line edit del enlace a registrar
 
         if (nombre != '' and suscriptores != '' and categoria != '' and enlace != ''): # verifica que los campos no estan vacios
-            self.conexion.insertar_canal(nombre, categoria,suscriptores, enlace) # el metodo inserta el canal en la base de datos
-            self.label_registro_estado.setText("Canal registrado correctamente")
+            reg_exitoso = self.conexion.insertar_canal(nombre, suscriptores, categoria, enlace) # el metodo inserta el canal en la base de datos
+            if(reg_exitoso == True):
+                self.label_registro_estado.setText("Canal registrado correctamente")
+                self.line_nombre_reg.clear()
+                self.line_suscriptores_reg.clear()
+                self.line_categoria_reg.clear()
+                self.line_enlace_reg.clear()
+            elif(reg_exitoso == False):
+                self.label_registro_estado.setText("Error en la base de datos. El nombre puede estar en uso, intente nuevamente")
+
         else:
             self.label_registro_estado.setText("No se han completado todos los campos")
 
-    def buscar_borrar(self):
+    def buscar_borrar(self): # metodo para la pagina borrar para filtrar un canal
+
         nombre = self.line_buscar_borrar.text()
         if(nombre != ''): # verifica que si haya escrito algo
-            self.conexion.buscar_canal(self.tabla_borrar, nombre)
+            self.conexion.buscar_canal_tabla(self.tabla_borrar, nombre)
         else:
             self.label_borrar_estado.setText("No se ha ingresado un parámetro de búsqueda")
+
+    def borrar_canal(self):
+        fila_seleccionada = self.tabla_borrar.currentRow() # obtiene la fila seleccionada en la tabla
+        nombre = self.tabla_borrar.item(fila_seleccionada, 1).text() # obtiene el nombre del canal en la columna 0 de la fila seleccionada
+        #id = self.tabla_borrar.item(fila_seleccionada, 0).text()  # Obtener el valor de la columna ID para la fila seleccionada
+        self.conexion.borrar_canal_bd(nombre) # llama el metodo para borrar el canal de la base de datos
+        self.tabla_borrar.removeRow(fila_seleccionada) # elimina la fila de la tabla
+        self.bt_borrar.setEnabled(False) # deshabilita el botón de borrar después de eliminar el canal
+
+    def seleccionar_fila(self, row, column):
+        self.bt_borrar.setEnabled(True) # habilita el botón de borrar cuando se selecciona una fila de la tabla
+
+
+    def buscar_actualizar(self):
+        nombre_a_buscar = self.line_buscar_act.text()
+        nombre, suscriptores, categoria, enlace = self.conexion.buscar_canal_parametros(nombre_a_buscar)
+        if (nombre != ""):
+            self.line_nombre_act.setText(nombre)
+            self.line_suscriptores_act.setText(suscriptores)
+            self.line_categoria_act.setText(categoria)
+            self.line_enlace_act.setText(enlace)
+            self.nombre_actual = nombre_a_buscar
+        else:
+            self.label_act_estado.setText("Canal no encontrado")
+            self.line_nombre_act.clear()
+            self.line_suscriptores_act.clear()
+            self.line_categoria_act.clear()
+            self.line_enlace_act.clear()
+
+    def actualizar(self):
+
+        nombre = self.line_nombre_act.text()
+        suscriptores = self.line_suscriptores_act.text()
+        categoria = self.line_categoria_act.text()
+        enlace = self.line_enlace_act.text()
+        if (nombre != "" and self.nombre_actual != ""):
+            self.conexion.borrar_canal_bd(self.nombre_actual)
+            self.conexion.insertar_canal(nombre,suscriptores, categoria, enlace)
+            self.nombre_actual = ''
+
+
 
 
 if __name__ == '__main__':

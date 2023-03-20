@@ -538,7 +538,7 @@ QTableWidget QTableCornerButton::section {
                     <enum>QAbstractScrollArea::AdjustToContents</enum>
                    </property>
                    <attribute name="horizontalHeaderVisible">
-                    <bool>false</bool>
+                    <bool>true</bool>
                    </attribute>
                    <attribute name="horizontalHeaderCascadingSectionResizes">
                     <bool>true</bool>
@@ -561,6 +561,11 @@ QTableWidget QTableCornerButton::section {
                    <attribute name="verticalHeaderCascadingSectionResizes">
                     <bool>false</bool>
                    </attribute>
+                   <column>
+                    <property name="text">
+                     <string>ID</string>
+                    </property>
+                   </column>
                    <column>
                     <property name="text">
                      <string>NOMBRE</string>
@@ -872,6 +877,11 @@ QTableWidget QTableCornerButton::section {
                   <widget class="QTableWidget" name="tabla_borrar">
                    <column>
                     <property name="text">
+                     <string>ID</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
                      <string>NOMBRE</string>
                     </property>
                    </column>
@@ -971,7 +981,7 @@ QTableWidget QTableCornerButton::section {
                     </widget>
                    </item>
                    <item>
-                    <widget class="QLineEdit" name="lineEdit_4">
+                    <widget class="QLineEdit" name="line_buscar_act">
                      <property name="minimumSize">
                       <size>
                        <width>300</width>
@@ -1075,16 +1085,16 @@ QTableWidget QTableCornerButton::section {
                       <number>100</number>
                      </property>
                      <item>
-                      <widget class="QLineEdit" name="lineEdit_8"/>
+                      <widget class="QLineEdit" name="line_nombre_act"/>
                      </item>
                      <item>
-                      <widget class="QLineEdit" name="lineEdit_9"/>
+                      <widget class="QLineEdit" name="line_suscriptores_act"/>
                      </item>
                      <item>
-                      <widget class="QLineEdit" name="lineEdit_10"/>
+                      <widget class="QLineEdit" name="line_categoria_act"/>
                      </item>
                      <item>
-                      <widget class="QLineEdit" name="lineEdit_12"/>
+                      <widget class="QLineEdit" name="line_enlace_act"/>
                      </item>
                     </layout>
                    </item>
@@ -1119,7 +1129,7 @@ QTableWidget QTableCornerButton::section {
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_11">
                    <item>
-                    <widget class="QLabel" name="label_16">
+                    <widget class="QLabel" name="label_act_estado">
                      <property name="minimumSize">
                       <size>
                        <width>150</width>

@@ -10,7 +10,7 @@ class ConexionSQLite:
         self.cursor = self.conexion.cursor()
 
     def cargar_datos_en_tabla(self, tabla):
-        query = "SELECT nombre, suscriptores, categoria, enlace FROM base_datos"
+        query = "SELECT id, nombre, suscriptores, categoria, enlace FROM base_datos"
         resultado = self.cursor.execute(query).fetchall()
         tabla.setRowCount(0)
         for fila_num, fila_datos in enumerate(resultado):
@@ -18,23 +18,58 @@ class ConexionSQLite:
             for col_num, dato in enumerate(fila_datos):
                 tabla.setItem(fila_num, col_num, QTableWidgetItem(str(dato)))
 
+        tabla.setColumnHidden(0, True) # esconde el id
+
     def insertar_canal(self, nombre, suscriptores, categoria, enlace):
 
         try:
-            self.cursor.execute("INSERT INTO base_datos (nombre, suscriptores, categoria, enlace) VALUES (?, ?, ?, ?)", (nombre, suscriptores, categoria, enlace))
-            self.conexion.commit()
-            return True
+            # Verificar si el nombre ya existe en la tabla
+            query = "SELECT nombre FROM base_datos WHERE nombre = ?"
+            resultado = self.cursor.execute(query, (nombre,))
+            fila= resultado.fetchone()
+
+            if fila is not None:
+                # El nombre ya existe, salir
+                return False
+
+            else:
+                self.cursor.execute("INSERT INTO base_datos (nombre, suscriptores, categoria, enlace) VALUES (?, ?, ?, ?)", (nombre, suscriptores, categoria, enlace))
+                self.conexion.commit()
+                return True
+
         except sqlite3.Error:
-            self.label_registro_estado.setText("Error al insertar datos con SQLite")
             return False
 
-    def buscar_canal(self, tabla, nombre):
-        query = "SELECT * FROM base_datos WHERE nombre = ?"
-        result = self.cursor.execute(query, (nombre,))
+    def buscar_canal_tabla(self, tabla, nombre):
+        query = "SELECT id, nombre, suscriptores, categoria, enlace FROM base_datos WHERE nombre = ?" # crea la consulta SQL para buscar los canales por nombre
+        resultado = self.cursor.execute(query, (nombre,)) # ejecuta la consulta con el nombre recibido como parámetro
         tabla.setRowCount(0)
+        for fila_num, fila_datos in enumerate(resultado):
+            tabla.insertRow(fila_num)
+            for col_num, dato in enumerate(fila_datos):
+                tabla.setItem(fila_num, col_num, QTableWidgetItem(str(dato)))
 
-        for row_number, row_data in enumerate(result):
-            tabla.insertRow(row_number)
-            for column_number, data in enumerate(row_data):
-                tabla.setItem(row_number, column_number, QTableWidgetItem(str(data)))
+        tabla.setColumnHidden(0, True) # esconde el id
 
+    def borrar_canal_bd(self, nombre):
+
+        query = "DELETE FROM base_datos WHERE nombre = ?" # crea una consulta SQL para eliminar el canal de la base de datos
+        self.cursor.execute(query, (nombre,))
+        self.conexion.commit() # guarda los cambios en la base de datos
+
+
+
+    def buscar_canal_parametros(self, nombre):
+        query = "SELECT nombre, suscriptores, categoria, enlace FROM base_datos WHERE nombre = ?"
+        result = self.cursor.execute(query, (nombre,))
+        row_data = result.fetchone() # Obtiene la primera fila del resultado
+
+        if row_data is not None: # Si se encontró un resultado
+            nombre = str(row_data[0])
+            suscriptores = str(row_data[1])
+            categoria = str(row_data[2])
+            enlace = str(row_data[3])
+            return nombre, suscriptores, categoria, enlace
+
+        else:
+            return "", "", "", "" # Si no se encontró un resultado, retorna ""
