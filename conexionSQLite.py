@@ -60,7 +60,7 @@ class ConexionSQLite:
 
 
     def buscar_canal_parametros(self, nombre):
-        query = "SELECT nombre, suscriptores, categoria, enlace FROM base_datos WHERE nombre = ?"
+        query = "SELECT nombre, suscriptores, categoria, enlace, id FROM base_datos WHERE nombre = ?"
         result = self.cursor.execute(query, (nombre,))
         row_data = result.fetchone() # Obtiene la primera fila del resultado
 
@@ -69,7 +69,13 @@ class ConexionSQLite:
             suscriptores = str(row_data[1])
             categoria = str(row_data[2])
             enlace = str(row_data[3])
-            return nombre, suscriptores, categoria, enlace
+            id = str(row_data[4])
+            return nombre, suscriptores, categoria, enlace, id
 
         else:
-            return "", "", "", "" # Si no se encontró un resultado, retorna ""
+            return "", "", "", "", "" # Si no se encontró un resultado, retorna ""
+
+    def actualizar_canal_bd(self,id, nombre, suscriptores, categoria, enlace):
+        query = "UPDATE base_datos SET nombre = ?, suscriptores = ?, categoria = ?, enlace = ? WHERE id = ?"
+        self.cursor.execute(query, (nombre, suscriptores, categoria, enlace, id))
+        self.conexion.commit()

@@ -72,8 +72,9 @@ class Ventana(QMainWindow):
         self.bt_buscar_actualizar.clicked.connect(self.buscar_actualizar)
 
         self.bt_actualizar.clicked.connect(self.actualizar)
+        self.id_act = ''
 
-        self.nombre_actual = ''
+        self.bt_buscar_consultar.clicked.connect(self.consultar)
 
     def cambiar_estado_ventana(self):
         if self.isMaximized():
@@ -181,13 +182,14 @@ class Ventana(QMainWindow):
 
     def buscar_actualizar(self):
         nombre_a_buscar = self.line_buscar_act.text()
-        nombre, suscriptores, categoria, enlace = self.conexion.buscar_canal_parametros(nombre_a_buscar)
+        nombre, suscriptores, categoria, enlace, id = self.conexion.buscar_canal_parametros(nombre_a_buscar)
         if (nombre != ""):
             self.line_nombre_act.setText(nombre)
             self.line_suscriptores_act.setText(suscriptores)
             self.line_categoria_act.setText(categoria)
             self.line_enlace_act.setText(enlace)
-            self.nombre_actual = nombre_a_buscar
+            self.id_act = id
+            self.label_act_estado.setText("Canal encontrado")
         else:
             self.label_act_estado.setText("Canal no encontrado")
             self.line_nombre_act.clear()
@@ -196,18 +198,32 @@ class Ventana(QMainWindow):
             self.line_enlace_act.clear()
 
     def actualizar(self):
-
+        self.label_act_estado.setText("")
         nombre = self.line_nombre_act.text()
         suscriptores = self.line_suscriptores_act.text()
         categoria = self.line_categoria_act.text()
         enlace = self.line_enlace_act.text()
-        if (nombre != "" and self.nombre_actual != ""):
-            self.conexion.borrar_canal_bd(self.nombre_actual)
-            self.conexion.insertar_canal(nombre,suscriptores, categoria, enlace)
-            self.nombre_actual = ''
+        if (nombre != "" and suscriptores != "" and categoria != "" and enlace != ""):
+            self.conexion.actualizar_canal_bd(self.id_act, nombre, suscriptores, categoria, enlace)
+            self.label_act_estado.setText("Canal actualizado")
+        else:
+            self.label_act_estado.setText("No se pudo actualizar el canal")
 
-
-
+    def consultar(self):
+        nombre_a_buscar = self.line_buscar_consultar.text()
+        nombre, suscriptores, categoria, enlace, id = self.conexion.buscar_canal_parametros(nombre_a_buscar)
+        if(nombre != "" and suscriptores != "" and categoria != "" and enlace != ""):
+            self.label_nombre_cons.setText(nombre)
+            self.label_suscriptores_cons.setText(suscriptores)
+            self.label_categoria_cons.setText(categoria)
+            self.label_enlace_cons.setText(enlace)
+            self.label_consultar_estado.setText("Canal encontrado")
+        else:
+            self.label_consultar_estado.setText("No se encontró el canal")
+            self.label_nombre_cons.clear()
+            self.label_suscriptores_cons.clear()
+            self.label_categoria_cons.clear()
+            self.label_enlace_cons.clear()
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
