@@ -1,18 +1,20 @@
 from PyQt6.QtSql import QSqlQuery
-from PyQt6.QtWidgets import QMainWindow, QApplication, QSizeGrip, QHeaderView
+from PyQt6.QtWidgets import *
 from PyQt6.uic import loadUi
-from PyQt6.QtCore import Qt, QPoint
+from PyQt6.QtCore import Qt, QPoint, QPropertyAnimation, QEasingCurve
 import sys
-
+import random
+import string
 from conexionSQLite import *
+from conexionSQLiteUsuarios import ConexionSQLiteUsuarios
 
 
 class Ventana(QMainWindow):
-    def __init__(self):
+    def __init__(self,nombre_base_datos):
         super().__init__()
         loadUi('interfaz1.ui', self)  # carga la interfaz de usuario desde el archivo .ui
-
-        self.conexion = ConexionSQLite()
+        self.nombre_base_datos = nombre_base_datos
+        self.conexion = ConexionSQLite(self.nombre_base_datos)
         self.conexion.cargar_datos_en_tabla(self.tabla_datos)
         self.conexion.cargar_datos_en_tabla(self.tabla_borrar)
 
@@ -38,6 +40,8 @@ class Ventana(QMainWindow):
 
         # conecta la señal clicked del botón bt_min al método minimizar_ventana
         self.bt_min.clicked.connect(self.minimizar_ventana)
+
+        self.bt_menu.clicked.connect(self.mover_menu)
 
         # maximiza la ventana al iniciar la aplicación
         self.showMaximized()
@@ -101,7 +105,19 @@ class Ventana(QMainWindow):
         event.accept()
 
 
+    def mover_menu(self):
+        width = self.frame_control.width()
+        normal = 0
+        if width == 0:
+            extender = 200
+        else:
+            extender = normal
+        self.animacion = QPropertyAnimation(self.frame_control, b'minimumWidth')
+        self.animacion.setDuration(300)
+        self.animacion.setStartValue(width)
+        self.animacion.setEndValue(extender)
 
+        self.animacion.start()
     def ir_a_pagina_registrar(self):
         # Obtiene el índice de la página a mostrar
         indice_pagina_registrar = self.stackedWidget.indexOf(self.page_registrar)
@@ -171,7 +187,7 @@ class Ventana(QMainWindow):
     def borrar_canal(self):
         fila_seleccionada = self.tabla_borrar.currentRow() # obtiene la fila seleccionada en la tabla
         nombre = self.tabla_borrar.item(fila_seleccionada, 1).text() # obtiene el nombre del canal en la columna 0 de la fila seleccionada
-        #id = self.tabla_borrar.item(fila_seleccionada, 0).text()  # Obtener el valor de la columna ID para la fila seleccionada
+
         self.conexion.borrar_canal_bd(nombre) # llama el metodo para borrar el canal de la base de datos
         self.tabla_borrar.removeRow(fila_seleccionada) # elimina la fila de la tabla
         self.bt_borrar.setEnabled(False) # deshabilita el botón de borrar después de eliminar el canal
@@ -225,8 +241,136 @@ class Ventana(QMainWindow):
             self.label_categoria_cons.clear()
             self.label_enlace_cons.clear()
 
+class IniciarSesion(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        loadUi('iniciosesion.ui',self) # carga la interfaz de inicio de sesion desde el archivo .ui
+        self.conexion = ConexionSQLiteUsuarios()
+        self.ventana = None
+        self.bt_ingresar_usuario.clicked.connect(self.abrir_menu)
+        self.bt_ir_a_pagina_registrar_usuario.clicked.connect(self.ir_a_pagina_registrar_usuario)
+        self.bt_registrar_usuario.clicked.connect(self.registrar_usuario)
+        self.bt_ir_a_pagina_iniciar_sesion.clicked.connect(self.ir_a_pagina_iniciar_sesion)
+        # quita el borde de la ventana
+        self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint)
+        self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
+        self.gripSize = 10
+        self.grip = QSizeGrip(self)
+        self.grip.resize(self.gripSize, self.gripSize)
+        self.center()
+        # conecta la señal clicked del botón bt_cerrar al método close de la ventana
+        self.bt_cerrar.clicked.connect(self.close)
+
+        # conecta la señal clicked del botón bt_ventana al método cambiar_estado_ventana
+        self.bt_ventana.clicked.connect(self.cambiar_estado_ventana)
+
+        # conecta la señal clicked del botón bt_min al método minimizar_ventana
+        self.bt_min.clicked.connect(self.minimizar_ventana)
+
+    def center(self):
+
+        qr = self.frameGeometry()
+        cp = self.screen().availableGeometry().center()
+
+        qr.moveCenter(cp)
+        self.move(qr.topLeft())
+    def cambiar_estado_ventana(self):
+        if self.isMaximized():
+            # si la ventana está maximizada, la restaura
+            self.showNormal()
+        else:
+            # si la ventana no está maximizada, la maximiza
+            self.showMaximized()
+
+    def minimizar_ventana(self): # minimizar la ventana
+        self.showMinimized()
+
+    def resizeEvent(self, event):
+        rect = self.rect()
+        self.grip.move(rect.right() - self.gripSize, rect.bottom() - self.gripSize)
+
+    def mousePressEvent(self, event):
+        self.dragPos = event.globalPosition().toPoint()
+
+
+    def mouseMoveEvent(self, event):
+        self.move(self.pos() + event.globalPosition().toPoint() - self.dragPos )
+        self.dragPos = event.globalPosition().toPoint()
+        event.accept()
+    def abrir_menu(self):
+        usuario = self.line_nombre_usuario.text()
+        clave = self.line_clave_usuario.text()
+        if(usuario!= "" and clave != ""):
+            inicioExitoso= self.conexion.el_usuario_y_clave_correctos(usuario,clave)
+
+            if inicioExitoso==True:
+                if self.ventana is None:
+                    nombre_base_datos = self.conexion.base_de_datos_usuario(usuario)
+                    self.ventana = Ventana(nombre_base_datos)
+
+
+                    self.ventana.show()
+
+                    iniciarSesion.hide()
+
+                else:
+                    self.ventana = None  # Discard reference, close window.
+            else:
+                self.label_estado_iniciarsesion.setText("Usuario o contraseña incorrectos")
+        else:
+            self.label_estado_iniciarsesion.setText("No se han completado todos los campos")
+
+    def ir_a_pagina_registrar_usuario(self):
+        # Obtiene el índice de la página a mostrar
+        indice_pagina_registrar_usuario = self.stackedWidget.indexOf(self.page_registrarse)
+
+        # Muestra la página
+        self.stackedWidget.setCurrentIndex(indice_pagina_registrar_usuario)
+
+    def ir_a_pagina_iniciar_sesion(self):
+        # Obtiene el índice de la página a mostrar
+        indice_pagina_iniciar_sesion = self.stackedWidget.indexOf(self.page_iniciarsesion)
+
+        # Muestra la página
+        self.stackedWidget.setCurrentIndex(indice_pagina_iniciar_sesion)
+
+    def registrar_usuario(self):
+        usuario = self.line_nom_usuario_registrar.text()
+        clave = self.line_clave_usuario_registrar.text()
+        nom_base_datos = usuario + str(random.randint(10000, 99999)) # el nombre de la nueva base de datos es el usuario con un entero aleatorio
+        if (usuario != "" and clave != ""):
+            if(self.conexion.base_de_datos_usuario(usuario)==""): # si no retorna un nombre, no existe ese usuario, se puede usar
+                self.conexion.insertar_nuevo_usuario(usuario, clave, nom_base_datos)
+
+                # Conexión a la base de datos
+                conexion = sqlite3.connect(nom_base_datos + '.db')
+
+                # Cursor para ejecutar sentencias SQL
+                cursor = conexion.cursor()
+
+                # Creación de la tabla con los parámetros especificados y celdas vacías por defecto
+                cursor.execute('''CREATE TABLE base_datos
+                (ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                 NOMBRE TEXT DEFAULT '',
+                 SUSCRIPTORES INTEGER DEFAULT 0,
+                 CATEGORIA TEXT DEFAULT '',
+                 ENLACE TEXT DEFAULT '')''')
+
+                # Guardar los cambios y cerrar la conexión a la base de datos
+                conexion.commit()
+                conexion.close()
+
+                self.label_estado_registrar.setText("Registro exitoso")
+            else:
+                self.label_estado_registrar.setText("El usuario ya existe, intente con otro nombre")
+        else:
+            self.label_estado_registrar.setText("No se han completado todos los campos")
+
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    ventana = Ventana()
-    ventana.show()
+
+    iniciarSesion = IniciarSesion()
+    iniciarSesion.show()
+
     sys.exit(app.exec())

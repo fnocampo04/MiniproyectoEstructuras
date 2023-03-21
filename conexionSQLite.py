@@ -2,14 +2,16 @@ import sqlite3
 
 from PyQt6.QtSql import QSqlQuery
 from PyQt6.QtWidgets import QTableWidgetItem
-
+from main import Ventana
 
 class ConexionSQLite:
-    def __init__(self):
-        self.conexion = sqlite3.connect('base_datos.db')
+    def __init__(self, nombre_base_datos_SQLite):
+        self.nombre_base_datos_SQLite = nombre_base_datos_SQLite
+        self.conexion = sqlite3.connect(self.nombre_base_datos_SQLite + '.db')
         self.cursor = self.conexion.cursor()
 
     def cargar_datos_en_tabla(self, tabla):
+
         query = "SELECT id, nombre, suscriptores, categoria, enlace FROM base_datos"
         resultado = self.cursor.execute(query).fetchall()
         tabla.setRowCount(0)
