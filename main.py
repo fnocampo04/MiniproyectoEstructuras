@@ -159,7 +159,7 @@ class Ventana(QMainWindow):
     def registrar_canal(self):
         nombre = self.line_nombre_reg.text() # line edit del nombre a registrar
         suscriptores = self.line_suscriptores_reg.text() # line edit de los suscriptores a registrar
-        categoria = self.line_categoria_reg.text() # line edit de la categoria a registrar
+        categoria = self.line_categoria_reg.text().upper() # line edit de la categoria a registrar
         enlace = self.line_enlace_reg.text() # line edit del enlace a registrar
 
         if (nombre != '' and suscriptores != '' and categoria != '' and enlace != ''): # verifica que los campos no estan vacios
@@ -180,7 +180,7 @@ class Ventana(QMainWindow):
 
         nombre = self.line_buscar_borrar.text()
         if(nombre != ''): # verifica que si haya escrito algo
-            self.conexion.buscar_canal_tabla(self.tabla_borrar, nombre)
+            self.conexion.buscar_canal_tabla(self.tabla_borrar, nombre.upper())
         else:
             self.label_borrar_estado.setText("No se ha ingresado un parámetro de búsqueda")
 
@@ -217,7 +217,7 @@ class Ventana(QMainWindow):
         self.label_act_estado.setText("")
         nombre = self.line_nombre_act.text()
         suscriptores = self.line_suscriptores_act.text()
-        categoria = self.line_categoria_act.text()
+        categoria = self.line_categoria_act.text().upper()
         enlace = self.line_enlace_act.text()
         if (nombre != "" and suscriptores != "" and categoria != "" and enlace != ""):
             self.conexion.actualizar_canal_bd(self.id_act, nombre, suscriptores, categoria, enlace)

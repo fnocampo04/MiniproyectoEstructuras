@@ -42,9 +42,9 @@ class ConexionSQLite:
         except sqlite3.Error:
             return False
 
-    def buscar_canal_tabla(self, tabla, nombre):
-        query = "SELECT id, nombre, suscriptores, categoria, enlace FROM base_datos WHERE nombre = ?" # crea la consulta SQL para buscar los canales por nombre
-        resultado = self.cursor.execute(query, (nombre,)) # ejecuta la consulta con el nombre recibido como parámetro
+    def buscar_canal_tabla(self, tabla, categoria):
+        query = "SELECT id, nombre, suscriptores, categoria, enlace FROM base_datos WHERE categoria = ?" # crea la consulta SQL para buscar los canales por nombre
+        resultado = self.cursor.execute(query, (categoria,)) # ejecuta la consulta con el nombre recibido como parámetro
         tabla.setRowCount(0)
         for fila_num, fila_datos in enumerate(resultado):
             tabla.insertRow(fila_num)
